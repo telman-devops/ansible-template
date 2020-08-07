@@ -1,0 +1,25 @@
+---
+- name
+  hosts: ALL_SERVERS
+  become: yes
+
+  vars:
+   admin_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          66343062623063366335316435393132303131383137643831363237383531663730613464653163
+          6638313866353431313139613466303263313666393234620a666565356436333266396537316631
+          38303566656530373133336563613335663534643364333165386361376261353262393862323038
+          6530396631366532380a616538646439626338313337373031653561663338653333333338396561
+          6137 
+
+  tasks:
+  - name: Install tree package
+    yum: name=tree state:latest
+
+  - name: Create config file
+    copy:
+     dest: "/home/ec2-user/myconfig.conf"
+     content: |
+      port = 9092
+      user = admin
+      password = {{ admin_password }}

@@ -1,0 +1,30 @@
+---
+- name: Loop 
+  hosts: linux1
+  become: yes
+
+  tasks:
+  - name: Say hello from all
+    debug:
+      msg: "{{ item }}"
+    loop: 
+     - "Vasya"
+     - "Masha"
+
+  - name: Loop until
+    shell: echo -n Z >> file.txt && cat file.txt
+    register: output
+    delay: 2
+    retries: 10
+    until: output.stdout.find("ZZZZ") == false
+
+  - name: Print output
+    debug:
+     var: output.stdout
+
+#  - name: Install Packages
+#    yum: name={{ item }} state=installed
+#    loop:
+#     - tree
+#     - mysql-client
+#     - httpd

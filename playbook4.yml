@@ -1,0 +1,29 @@
+---
+- name: Debug, Set_fact, Register Lesson
+  hosts: all
+  become: yes
+
+  vars:
+   param1: Hello
+   param2: World
+   secret: ADAKSDJKAJSDKAJSDK
+
+  tasks:
+
+   - name: Print secret varibale
+     debug: 
+      var: secret
+
+   - debug:
+      msg: "Secret var is: {{ secret  }}"
+
+   - set_fact: join_param="{{ param1 }} {{ param2 }} from {{ owner }}"
+
+   - debug:
+      var: join_param
+
+   - shell: uptime
+     register: result
+
+   - debug:
+      var: result

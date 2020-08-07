@@ -1,0 +1,15 @@
+- name: Install Apache and Copy index.html file
+# ansible-playbook playbook8.yml -e "HOSTNAME=ALL_SERVERS" 
+  hosts: "{{ HOSTNAME }}"
+  become: yes
+
+  vars:
+   mytext: "Hello From Telman"
+
+  tasks:
+  - name: Ping test
+    ping:
+
+  - include: /forPL9/create_folders.yml
+  - include: /forPL9/create_files.yml
+

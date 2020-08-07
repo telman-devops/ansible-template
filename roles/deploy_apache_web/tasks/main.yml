@@ -1,0 +1,39 @@
+---
+# tasks file for deploy_apache_web
+
+- name: Check and print Linux version
+  debug:
+     var: ansible_os_family
+
+- block: #===FOR REDHAT===
+   - name: Install Apache
+     yum: name=httpd state=latest
+
+   - name: Start Apache and make inable after restart
+     service: name=httpd state=started enabled=yes
+
+  when: ansible_os_family == "RedHat"
+
+#  - block: #===FOR DEBIAN===
+#
+#     - name: Install Apache For Debian
+#	yum: name=apache2 state=latest
+#
+#     - name: Start Apache and make inable after restart
+#	service: name=apache2 state=started enabled=yes
+#
+#    when: ansible_os_family == "Debian"
+ 
+
+- name: Copy Template File
+  template: src=index.j2 dest={{ dest_folder }}/index.html mode=0555
+  notify:
+   - Restart Apache RedHat
+
+- name: Copy Files From site filder
+  copy: src={{ item }} dest={{dest_folder}} mode=0555
+  loop:
+    - page1.html
+  notify:
+    - Restart Apache RedHat
+#   - Restart Apache Debian

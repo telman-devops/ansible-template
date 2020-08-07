@@ -1,0 +1,6 @@
+---
+- name: Debug, set_fact, register Lesson
+  hosts: all
+  become: yes
+
+ 
